@@ -1,0 +1,13 @@
+﻿  app.cpp
+C:\Users\Hendrik\git-workspace\GSP\second\src\app.cpp(97): warning C4244: "Initialisierung": Konvertierung von "_Rep" in "unsigned long", möglicher Datenverlust
+          with
+          [
+              _Rep=__int64
+          ]
+C:\Users\Hendrik\git-workspace\GSP\second\src\app.cpp(102): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Hendrik\git-workspace\GSP\second\src\app.cpp(103): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Hendrik\git-workspace\GSP\second\src\app.cpp(104): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Hendrik\git-workspace\GSP\second\src\app.cpp(107): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Hendrik\git-workspace\GSP\second\src\app.cpp(108): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+C:\Users\Hendrik\git-workspace\GSP\second\src\app.cpp(109): warning C4244: "=": Konvertierung von "double" in "float", möglicher Datenverlust
+  main.vcxproj -> C:\Users\Hendrik\git-workspace\GSP\second\build\win.x86_64.vc14\Debug\main.exe

@@ -1,0 +1,27 @@
+{
+	"folders":
+	[
+		{
+			"path": "/run/media/hendrik/563C576E3C57485F/Users/Hendrik/git-workspace/GSP/second/src"
+		}
+	],
+    "settings":
+    {
+        "cmake":
+        {
+            "schemes":
+            [
+                {
+                    "name": "Debug",
+                    "build_folder": "${project_path}",
+                    "command_line_overrides":
+                    {
+                        "BUILD_SHARED_LIBS": true,
+                        "CMAKE_BUILD_TYPE": "Debug",
+                        "CMAKE_EXPORT_COMPILE_COMMANDS": true
+                    }
+                }
+            ]
+        }
+    }
+}
