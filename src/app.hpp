@@ -22,4 +22,5 @@ private:
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 	std::unique_ptr<Window> window_;
+    std::string GetShader(const std::string &path);
 };

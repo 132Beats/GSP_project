@@ -3,6 +3,9 @@
 #include "app.hpp"
 #include <memory>
 #include <chrono>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 #define DIMENSION 3
 #define VERTEX_COUNT 4
@@ -12,6 +15,8 @@
 #define M_PI	3.14159265358979323846f
 #endif
 
+const std::string v_shader_path = "vertex00.shader";//windoof
+const std::string f_shader_path = "res/shaders/fragment00.shader";//windoof
 static void GLClearError(){
     while(glGetError()!= GL_NO_ERROR){
 
@@ -38,6 +43,18 @@ App::App() {
 }
 App::~App() {
 	SDL_Quit();
+}
+
+std::string App::GetShader(const std::string &path){
+    std::ifstream stream(path);
+    std::string line,str;
+    std::stringstream ss;
+    while(getline(stream,line)){
+        ss << line << std::endl;
+        str = str + line + "\n";
+    }
+    std::cout << "String: " << str << std::endl;
+    return str;
 }
 int App::Start() {
 	running_ = true;
@@ -108,7 +125,6 @@ int App::Start() {
         unsigned long int time = std::chrono::high_resolution_clock().now().time_since_epoch().count();
         double timed = time;
         timed=timed/500000000;
-        std::cout << time << " : " << positions[0] << " : " << (timed)<< std::endl;
 
         /*positions[0]=stdpositions[0]*sin(timed);
         positions[3]=stdpositions[3]*sin(timed);
@@ -121,7 +137,6 @@ int App::Start() {
         glDrawArrays(GL_TRIANGLES, 0, 4);
         GLClearError();
         glDrawElements(GL_TRIANGLES,INDEX_COUNT,GL_UNSIGNED_INT,nullptr);
-        std::cout << "INDICES:" << std::endl;
         GLPrintError();
 
 		window_->Swap();
