@@ -72,3 +72,16 @@ else()
 			PUBLIC OpenGL::GL
 			)
 endif()
+
+#glm
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+	find_package(glm REQUIRED)
+	target_link_libraries(main
+			PUBLIC glm
+			)
+else()
+	find_package(glm REQUIRED)
+	target_link_libraries(main
+			PUBLIC glm
+			)
+endif()

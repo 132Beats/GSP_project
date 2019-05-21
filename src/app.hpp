@@ -5,8 +5,10 @@
 
 #ifndef _WIN32 
 #include <SDL2/SDL.h>
+#include <glm/glm.hpp>
 #else
 #include <SDL.h>
+#include <glm\glm.hpp>
 #endif
 
 class App {

@@ -5,7 +5,7 @@
 		<Option title="gsp1"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\;CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\cmake\;CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\cmake\SDL2\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\;CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\cmake\;CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\cmake\SDL2\;CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\cmake\glm\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/run/media/hendrik/563C576E3C57485F/Users/Hendrik/git-workspace/GSP/GSP_project/build/manjaro-clion"/>
@@ -121,6 +121,15 @@
 		</Unit>
 		<Unit filename="/run/media/hendrik/563C576E3C57485F/Users/Hendrik/git-workspace/GSP/GSP_project/src/../../../../../../../../../../usr/lib64/cmake/SDL2/SDL2Targets.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\cmake\SDL2\"/>
+		</Unit>
+		<Unit filename="/run/media/hendrik/563C576E3C57485F/Users/Hendrik/git-workspace/GSP/GSP_project/src/../../../../../../../../../../usr/lib64/cmake/glm/glmConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\cmake\glm\"/>
+		</Unit>
+		<Unit filename="/run/media/hendrik/563C576E3C57485F/Users/Hendrik/git-workspace/GSP/GSP_project/src/../../../../../../../../../../usr/lib64/cmake/glm/glmConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\cmake\glm\"/>
+		</Unit>
+		<Unit filename="/run/media/hendrik/563C576E3C57485F/Users/Hendrik/git-workspace/GSP/GSP_project/src/../../../../../../../../../../usr/lib64/cmake/glm/glmTargets.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\..\..\usr\lib64\cmake\glm\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

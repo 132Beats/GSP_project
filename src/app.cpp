@@ -116,7 +116,7 @@ int App::Start() {
         glBindVertexArray(vertArrayObjNames);
         glBindBuffer(GL_ARRAY_BUFFER,buffObjNames);
 
-        glBufferData(GL_ARRAY_BUFFER,sizeof(float)*VERTEX_COUNT*DIMENSION,positions,GL_DYNAMIC_DRAW);
+        //glBufferData(GL_ARRAY_BUFFER,sizeof(float)*VERTEX_COUNT*DIMENSION,positions,GL_DYNAMIC_DRAW);
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, DIMENSION, GL_FLOAT,GL_FALSE, DIMENSION*sizeof(GL_FLOAT),0);
         glBindBuffer(GL_ARRAY_BUFFER,0);
