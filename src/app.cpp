@@ -83,7 +83,7 @@ int App::Start() {
             0.5f, -0.5f, 0.0f
     };
     float positions[VERTEX_COUNT*DIMENSION] = {
-            -0.6f, -0.6f, 0.39f,
+            -0.6f, -0.5f, 0.39f,
             0.6f, -0.5f, 0.39f,
             0.0f, -0.6f, -0.78f,
             0.0f, 0.6f, 0.0f
