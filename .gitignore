@@ -7,3 +7,4 @@ install_manifest.txt
 .idea
 src/.idea
 build/
+src/cmake-build-debug
