@@ -6,7 +6,6 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <glm\glm.hpp>
 #include <math.h>
 
 #define DIMENSION 3
@@ -70,7 +69,7 @@ int App::Start() {
 		window_->Clear();
 		Render();
 		window_->Swap();
-		_sleep(5);
+		//_sleep(5);
 	}
 	glDeleteProgram(program);
 
@@ -353,7 +352,7 @@ void App::initGeo(){
 	glBindBuffer(GL_ARRAY_BUFFER, buffObjNames);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, positions, GL_STATIC_DRAW);
 	
-	//Gen VNO (für normalen)
+	//Gen VNO (fï¿½r normalen)
 	glGenBuffers(1, &indexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, normals, GL_STATIC_DRAW);
