@@ -72,7 +72,6 @@ int App::Start() {
 		//_sleep(5);
 	}
 	glDeleteProgram(program);
-
 	return 0;
 }
 void App::HandleEvents() {
@@ -94,34 +93,34 @@ void App::HandleKeyboardEvent(const SDL_KeyboardEvent& event) {
 	case SDL_KEYDOWN:
 		switch (event.keysym.sym){
 		case SDLK_a:
-			alpha += 0.01;
+			alpha += 0.02;
 			break;
 		case SDLK_d:
-			alpha -= 0.01;
+			alpha -= 0.02;
 			break;
 		case SDLK_s:
-			beta -= 0.01;
+			beta -= 0.02;
 			break;
 		case SDLK_w:
-			beta += 0.01;
+			beta += 0.02;
 			break;
 		case SDLK_UP:
-			y += 0.01;
+			y += 0.02;
 			break;
 		case SDLK_DOWN:
-			y -= 0.01;
+			y -= 0.02;
 			break;
 		case SDLK_RIGHT:
-			x += 0.01;
+			x += 0.02;
 			break;
 		case SDLK_LEFT:
-			x -= 0.01;
+			x -= 0.02;
 			break;
 		case SDLK_b:
-			z += 0.01;
+			z += 0.02;
 			break;
 		case SDLK_v:
-			z -= 0.01;
+			z -= 0.02;
 			break;
 		}
 	}
@@ -153,7 +152,7 @@ void App::Render() {
 	glVertexAttribPointer(0, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0);
 	//glBindBuffer(GL_ARRAY_BUFFER, buffObjNames);
 	glEnableVertexAttribArray(1);
-	//glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+	//glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
 	glVertexAttribPointer(1, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0);
 	glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 1.0f, 1.0f);
 	glUniformMatrix4fv(glGetUniformLocation(program, "rot"), 1, GL_FALSE, &rot[0][0]);
@@ -167,17 +166,6 @@ void App::Render() {
 	glDrawArrays(GL_TRIANGLES, 9, 3);
 	GLClearError();
 	GLPrintError();
-
-	/*positions[0]=stdpositions[0]*sin(timed);
-	positions[3]=stdpositions[3]*sin(timed);
-	positions[6]=stdpositions[6]*sin(timed);
-
-
-	positions[1]=stdpositions[1]*sin(timed+M_PI/2);
-	positions[4]=stdpositions[4]*sin(timed+M_PI/2);
-	positions[7]=stdpositions[7]*sin(timed+M_PI/2);
-	glDrawArrays(GL_TRIANGLES, 0, 3);*/
-	
 }
 
 unsigned int App::CompileShader(unsigned int type, const std::string& source){
@@ -353,8 +341,8 @@ void App::initGeo(){
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, positions, GL_STATIC_DRAW);
 	
 	//Gen VNO (f�r normalen)
-	glGenBuffers(1, &indexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+	glGenBuffers(1, &normalBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, normals, GL_STATIC_DRAW);
 
 
@@ -363,6 +351,6 @@ void App::initGeo(){
 	glVertexAttribPointer(0, DIMENSION, GL_FLOAT, GL_FALSE,0, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, buffObjNames);
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
 	glVertexAttribPointer(1, DIMENSION, GL_FLOAT, GL_FALSE,0, 0);
 }

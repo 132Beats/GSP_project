@@ -17,7 +17,7 @@ public:
 	~App();
 	int Start();
 private:
-	GLuint vertArrayObjNames, buffObjNames, indexBuffer, program;
+	GLuint vertArrayObjNames, buffObjNames, normalBuffer, program;
 	bool running_{ false };
 	void HandleEvents();
 	void HandleKeyboardEvent(const SDL_KeyboardEvent& event);
