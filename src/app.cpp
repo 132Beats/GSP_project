@@ -9,24 +9,20 @@
 #include <math.h>
 
 #define DIMENSION 3
-#define VERTEX_COUNT 4
-#define INDEX_COUNT 12
-
+#define GLCall(x) GLClearError();x;GLPrintError(#x, __FILE__, __LINE__);
 #ifndef M_PI
 #define M_PI	3.14159265358979323846f
 #endif
 
-const std::string v_shader_path = "vertex00.shader";//windoof
-const std::string f_shader_path = "res/shaders/fragment00.shader";//windoof
 static void GLClearError(){
     while(glGetError()!= GL_NO_ERROR){
 
     }
 }
 
-static bool GLPrintError(){
+static bool GLPrintError(const char* function, const char* file, int line){
     while(GLenum error=glGetError()){
-        std::cout << "[OpenGL Error] (" << error << std::endl;
+        std::cout << "[OpenGL Error:" << error <<"] @ " << function << " on line " << line << " in " << file << std::endl;
         return false;
     }
     return true;
@@ -126,7 +122,7 @@ void App::HandleKeyboardEvent(const SDL_KeyboardEvent& event) {
 	}
 }
 void App::Render() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	
 	if (alpha >  2 * M_PI || alpha <  -2 * M_PI) alpha = -0 * M_PI;
 	if (beta >  2 * M_PI || beta <  -2 * M_PI) beta = -0 * M_PI;
@@ -144,43 +140,38 @@ void App::Render() {
 		glm::vec4(x, y, z, 1));
 	rot = tran*rotX*rotY;
 	//printf("%f %f %f %f\n", rotY[0].y, rotY[1].y, rotY[2].y,rotY[3].y);
-	glBindVertexArray(vertArrayObjNames);
-	glBindBuffer(GL_ARRAY_BUFFER, buffObjNames);
+    GLCall(glBindVertexArray(vertArrayObjNames));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffObjNames));
 	//glm::mat4 rot = glm::ro
-	//glBufferData(GL_ARRAY_BUFFER,sizeof(float)*VERTEX_COUNT*DIMENSION,positions,GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0);
-	//glBindBuffer(GL_ARRAY_BUFFER, buffObjNames);
-	glEnableVertexAttribArray(1);
-	//glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
-	glVertexAttribPointer(1, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0);
-	glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 1.0f, 1.0f);
-	glUniformMatrix4fv(glGetUniformLocation(program, "rot"), 1, GL_FALSE, &rot[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "rotT"), 1, GL_FALSE, &glm::transpose(rot)[0][0]);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 0.0f, 0.0f);
-	glDrawArrays(GL_TRIANGLES, 3, 3);
-	glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 1.0f, 0.0f);
-	glDrawArrays(GL_TRIANGLES, 6, 3);
-	glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 0.0f, 1.0f);
-	glDrawArrays(GL_TRIANGLES, 9, 3);
-	GLClearError();
-	GLPrintError();
+    GLCall(glEnableVertexAttribArray(0));
+    GLCall(glVertexAttribPointer(0, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
+    GLCall(glEnableVertexAttribArray(1));
+    GLCall(glVertexAttribPointer(1, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
+    GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 1.0f, 1.0f));
+    GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "rot"), 1, GL_FALSE, &rot[0][0]));
+    GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "rotT"), 1, GL_FALSE, &glm::transpose(rot)[0][0]));
+	GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
+    GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 0.0f, 0.0f));
+    GLCall(glDrawArrays(GL_TRIANGLES, 3, 3));
+    GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 1.0f, 0.0f));
+    GLCall(glDrawArrays(GL_TRIANGLES, 6, 3));
+	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 0.0f, 1.0f));
+    GLCall(glDrawArrays(GL_TRIANGLES, 9, 3));
 }
 
 unsigned int App::CompileShader(unsigned int type, const std::string& source){
-    unsigned int id = glCreateShader(type);
+    GLCall(unsigned int id = glCreateShader(type));
     const char* src = source.c_str();
-    glShaderSource(id,1,&src, nullptr);
-    glCompileShader(id);
+    GLCall(glShaderSource(id,1,&src, nullptr));
+    GLCall(glCompileShader(id));
 
     int result;
-    glGetShaderiv(id,GL_COMPILE_STATUS,&result);
+    GLCall(glGetShaderiv(id,GL_COMPILE_STATUS,&result));
     if (result==GL_FALSE){
         int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+        GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
         char* message = (char*)alloca(length*sizeof(char));
-        glGetShaderInfoLog(id,length,&length,message);
+        GLCall(glGetShaderInfoLog(id,length,&length,message));
         std::cout
         <<"Failed to compile "
         << (type==GL_VERTEX_SHADER ? "vertex" : "fragment")
@@ -188,7 +179,7 @@ unsigned int App::CompileShader(unsigned int type, const std::string& source){
         << std::endl
         << message
         << std::endl;
-        glDeleteShader(id);
+        GLCall(glDeleteShader(id));
         return 0;
     }
     return id;
