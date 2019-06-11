@@ -78,7 +78,7 @@ void App::HandleEvents() {
 		case SDL_QUIT:
 			running_ = false;
 			break;
-		//case SDL_KEYUP:
+		case SDL_KEYUP:
 		case SDL_KEYDOWN:
 			HandleKeyboardEvent();
 		}
