@@ -25,10 +25,48 @@ static bool GLPrintError(const char* function, const char* file, int line){
 }
 
 Geometry::Geometry() {
-
+	camera_ = std::make_unique<Camera>();
 }
 Geometry::~Geometry() {
 
+}
+
+void Geometry::HandleKeyboardEvent() {
+
+	if (keyboard_state_array[SDL_SCANCODE_A]) {
+		alpha += 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_D]) {
+		alpha -= 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_W]) {
+		beta += 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_S]) {
+		beta -= 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_UP]) {
+		y += 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
+		y -= 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_RIGHT]) {
+		x += 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_LEFT]) {
+		x -= 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_B]) {
+		z += 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_V]) {
+		z -= 0.02;
+	}
+	/*if (keyboard_state_array[SDL_SCANCODE_]) {
+	}
+
+	}*/
 }
 
 void Geometry::Initialize(){
@@ -167,7 +205,9 @@ void Geometry::Render() {
                        glm::vec4(0, 1, 0, 0),
                        glm::vec4(0, 0, 1, 0),
                        glm::vec4(x, y, z, 1));
-    rot = tran*rotX*rotY;
+	mvp = camera_->getPerspectiv()* camera_->getView()*tran*rotY*rotX;
+	glm::mat4 mv= camera_->getView()*tran*rotY*rotX;
+
     //printf("%f %f %f %f\n", rotY[0].y, rotY[1].y, rotY[2].y,rotY[3].y);
     GLCall(glBindVertexArray(vertArrayObjNames));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffObjNames));
@@ -177,8 +217,8 @@ void Geometry::Render() {
     GLCall(glEnableVertexAttribArray(1));
     GLCall(glVertexAttribPointer(1, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
     GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 1.0f, 1.0f));
-    GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "rot"), 1, GL_FALSE, &rot[0][0]));
-    GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "rotT"), 1, GL_FALSE, &glm::transpose(rot)[0][0]));
+    GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "MVP"), 1, GL_FALSE, &mvp[0][0]));
+    GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "MV"), 1, GL_FALSE, &mv[0][0]));
     GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
     GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 0.0f, 0.0f));
     GLCall(glDrawArrays(GL_TRIANGLES, 3, 3));
@@ -219,13 +259,13 @@ void Geometry::initShaders(){
             "#version 330 core\n"
             "layout(location = 0) in vec3 position;\n"
             "layout(location = 1) in vec3 normal;\n"
-            "uniform mat4 rot;\n"
-            "uniform mat4 rotT;\n"
+            "uniform mat4 MVP;\n"
+            "uniform mat4 MV;\n"
             "out vec3 vertex_normal_worldspace\n;"
             "void main(){\n"
-            "gl_Position = rot * vec4(position,1);\n"
+            "gl_Position = MVP * vec4(position,1);\n"
             //"gl_Position.w = 1.0;\n"
-            "vertex_normal_worldspace = (rotT*vec4(normal,1)).xyz;"
+            "vertex_normal_worldspace = (MV*vec4(normal,0)).xyz;"
             "}\n";
     const std::string fragmentShaderCode =
             "#version 330 core\n"

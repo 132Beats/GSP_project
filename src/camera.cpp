@@ -3,32 +3,25 @@
 //
 
 #include "camera.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 
 Camera::Camera() {
-	e = glm::vec3(0, 0, 0);
+	camPosition = glm::vec3(1, 1, 1);
+	camTarget = glm::vec3(0, 0, 0);
 	userUp = glm::vec3(0, 1, 0);
-	c = glm::vec3(0, 0, -1);
-	paramChanged();
+	view = glm::lookAt(camPosition, camTarget, userUp);
+	FoV = 45.0f;
+	nCP = 0.1f;
+	fCP = 100.0f;
+	screenRatio = 800.0f / 600.0f;
+	projection = glm::perspective(glm::radians(FoV), screenRatio, nCP, fCP);
 }
 
-void Camera::paramChanged() {
-	g = c - e;
-	back = -(g / glm::abs(g));
-	s = glm::cross(g, userUp);
-	s = s / glm::abs(s);
-	u = glm::cross(back, s);
+glm::mat4 Camera::getPerspectiv() {
+	return projection;
 }
 
-glm::mat4x4 Camera::getRot() {
-	return glm::mat4x4(glm::vec4(s,0), glm::vec4(u,0), glm::vec4(back,0),glm::vec4(0,0,0,1));
+glm::mat4 Camera::getView() {
+	return view;
 }
-
-glm::mat4x4 Camera::getTrans() {
-	return glm::mat4x4(glm::vec4(1, 0, 0, 0), glm::vec4(0, 1, 0, 0), glm::vec4(0, 0, 1, 0), glm::vec4(e, 1));
-}
-
-glm::mat4x4 Camera::getWorldToCam() {
-	return glm::transpose(getRot()) * glm::transpose(getTrans());
-}
-

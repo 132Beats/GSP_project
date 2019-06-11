@@ -76,7 +76,7 @@ void App::HandleEvents() {
 			break;
 		case SDL_KEYUP:
 		case SDL_KEYDOWN:
-			HandleKeyboardEvent();
+			geometry_->HandleKeyboardEvent();
 		}
 	}
 }
