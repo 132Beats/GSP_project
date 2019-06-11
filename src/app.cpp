@@ -78,48 +78,48 @@ void App::HandleEvents() {
 		case SDL_QUIT:
 			running_ = false;
 			break;
-		case SDL_KEYUP:
+		//case SDL_KEYUP:
 		case SDL_KEYDOWN:
-			HandleKeyboardEvent(event.key);
+			HandleKeyboardEvent();
 		}
 	}
 }
-void App::HandleKeyboardEvent(const SDL_KeyboardEvent& event) {
-	switch (event.type) {
-	case SDL_KEYDOWN:
-		switch (event.keysym.sym){
-		case SDLK_a:
-			alpha += 0.02;
-			break;
-		case SDLK_d:
-			alpha -= 0.02;
-			break;
-		case SDLK_s:
-			beta -= 0.02;
-			break;
-		case SDLK_w:
-			beta += 0.02;
-			break;
-		case SDLK_UP:
-			y += 0.02;
-			break;
-		case SDLK_DOWN:
-			y -= 0.02;
-			break;
-		case SDLK_RIGHT:
-			x += 0.02;
-			break;
-		case SDLK_LEFT:
-			x -= 0.02;
-			break;
-		case SDLK_b:
-			z += 0.02;
-			break;
-		case SDLK_v:
-			z -= 0.02;
-			break;
-		}
+void App::HandleKeyboardEvent() {
+	
+	if(keyboard_state_array[SDL_SCANCODE_A]) {
+		alpha += 0.02;
 	}
+	if (keyboard_state_array[SDL_SCANCODE_D]) {
+		alpha -= 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_W]) {
+		beta += 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_S]) {
+		beta -= 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_UP]) {
+		y += 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
+		y -= 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_RIGHT]) {
+		x += 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_LEFT]) {
+		x -= 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_B]) {
+		z += 0.02;
+	}
+	if (keyboard_state_array[SDL_SCANCODE_V]) {
+		z -= 0.02;
+	}
+	/*if (keyboard_state_array[SDL_SCANCODE_]) {
+	}
+		
+	}*/
 }
 void App::Render() {
     GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));

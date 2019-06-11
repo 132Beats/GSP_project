@@ -18,9 +18,10 @@ public:
 	int Start();
 private:
 	GLuint vertArrayObjNames, buffObjNames, normalBuffer, program;
+	const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 	bool running_{ false };
 	void HandleEvents();
-	void HandleKeyboardEvent(const SDL_KeyboardEvent& event);
+	void HandleKeyboardEvent();
 	void Render();
 	void initShaders();
 	void initGeo();
