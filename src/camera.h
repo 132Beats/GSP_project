@@ -4,7 +4,12 @@
 
 #ifndef GSP1_CAMERA_H
 #define GSP1_CAMERA_H
-#include "glm\glm.hpp"
+
+#ifndef _WIN32
+#include <glm/glm.hpp>
+#else
+#include <glm\glm.hpp>
+#endif
 
 class Camera {
 	public:

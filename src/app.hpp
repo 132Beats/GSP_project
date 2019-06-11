@@ -1,7 +1,14 @@
 #pragma once
 
 #include "window.hpp"
+#include "geometry.hpp"
 #include <memory>
+#include <chrono>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iostream>
 
 #ifndef _WIN32 
 #include <SDL2/SDL.h>
@@ -28,6 +35,7 @@ private:
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 	std::unique_ptr<Window> window_;
+    std::unique_ptr<Geometry> geometry_;
     std::string GetShader(const std::string &path);
 	glm::mat4x4 rotY;
 	glm::mat4x4 rotX;

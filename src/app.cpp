@@ -1,12 +1,5 @@
 
-#include <iostream>
 #include "app.hpp"
-#include <memory>
-#include <chrono>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <math.h>
 
 #define DIMENSION 3
 #define GLCall(x) GLClearError();x;GLPrintError(#x, __FILE__, __LINE__);
@@ -36,6 +29,7 @@ App::App() {
 	}
 	else{
 		window_ = std::make_unique<Window>();
+        geometry_ = std::make_unique<Geometry>();
 	}
 }
 App::~App() {
@@ -56,14 +50,16 @@ std::string App::GetShader(const std::string &path){
 int App::Start() {
 	running_ = true;
 	window_->Show();
-
-	initGeo();
+    geometry_->Initialize();
+    geometry_->initShaders();
+	//initGeo();
 	initShaders();
 	alpha = 0;
 	while (running_) {
 		HandleEvents();
 		window_->Clear();
-		Render();
+		//Render();
+        geometry_->Render();
 		window_->Swap();
 		//_sleep(5);
 	}
