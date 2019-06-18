@@ -53,7 +53,7 @@ int App::Start() {
     geometry_->Initialize();
     geometry_->initShaders();
 	//initGeo();
-	initShaders();
+	//initShaders();
 	alpha = 0;
 	while (running_) {
 		HandleEvents();

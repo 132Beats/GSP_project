@@ -188,25 +188,33 @@ void Geometry::Initialize(){
     glVertexAttribPointer(1, DIMENSION, GL_FLOAT, GL_FALSE,0, 0);
 }
 
+glm::mat4x4 Geometry::getModelMat() {
+	if (alpha >  2 * M_PI || alpha <  -2 * M_PI) alpha = -0 * M_PI;
+	if (beta >  2 * M_PI || beta <  -2 * M_PI) beta = -0 * M_PI;
+	rotY = glm::mat4x4(glm::vec4(cos(alpha), 0, -sin(alpha), 0),
+		glm::vec4(0, 1, 0, 0),
+		glm::vec4(sin(alpha), 0, cos(alpha), 0),
+		glm::vec4(0, 0, 0, 1));
+	rotX = glm::mat4x4(glm::vec4(1, 0, 0, 0),
+		glm::vec4(0, cos(beta), sin(beta), 0),
+		glm::vec4(0, -sin(beta), cos(beta), 0),
+		glm::vec4(0, 0, 0, 1));
+	tran = glm::mat4x4(glm::vec4(1, 0, 0, 0),
+		glm::vec4(0, 1, 0, 0),
+		glm::vec4(0, 0, 1, 0),
+		glm::vec4(x, y, z, 1));
+	return tran * rotY*rotX;
+}
+
 void Geometry::Render() {
     GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-    if (alpha >  2 * M_PI || alpha <  -2 * M_PI) alpha = -0 * M_PI;
-    if (beta >  2 * M_PI || beta <  -2 * M_PI) beta = -0 * M_PI;
-    rotY = glm::mat4x4(glm::vec4(cos(alpha), 0, -sin(alpha), 0),
-                       glm::vec4(0, 1,0 , 0),
-                       glm::vec4(sin(alpha),0 , cos(alpha), 0),
-                       glm::vec4(0, 0, 0, 1));
-    rotX = glm::mat4x4(glm::vec4(1,0,0,0),
-                       glm::vec4(0,cos(beta),sin(beta),0),
-                       glm::vec4(0,-sin(beta),cos(beta),0),
-                       glm::vec4(0,0,0,1));
-    tran = glm::mat4x4(glm::vec4(1, 0, 0, 0),
-                       glm::vec4(0, 1, 0, 0),
-                       glm::vec4(0, 0, 1, 0),
-                       glm::vec4(x, y, z, 1));
-	mvp = camera_->getPerspectiv()* camera_->getView()*tran*rotY*rotX;
-	glm::mat4 mv= camera_->getView()*tran*rotY*rotX;
+	m = getModelMat();
+	v = camera_->getView();
+	p = camera_->getPerspectiv();
+    
+	glm::mat4x4 mvp = p*v*m;
+	glm::mat4 mv= v*m;
 
     //printf("%f %f %f %f\n", rotY[0].y, rotY[1].y, rotY[2].y,rotY[3].y);
     GLCall(glBindVertexArray(vertArrayObjNames));

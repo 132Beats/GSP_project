@@ -25,7 +25,7 @@ private:
     GLuint vertArrayObjNames, buffObjNames, normalBuffer, program;
     glm::mat4x4 rotY;
     glm::mat4x4 rotX;
-    glm::mat4x4 mvp;
+    glm::mat4x4 m,v,p;
     glm::mat4x4 tran;
     float alpha = 0;
     float beta = 0;
@@ -34,5 +34,6 @@ private:
     float z = 0;
 	std::unique_ptr<Camera> camera_;
 	const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
+	glm::mat4x4 getModelMat();
 	
 };
