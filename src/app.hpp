@@ -10,7 +10,7 @@
 #include <math.h>
 #include <iostream>
 
-#include "perlin.hpp"
+//#include "perlin.hpp"
 
 #ifndef _WIN32 
 #include <SDL2/SDL.h>

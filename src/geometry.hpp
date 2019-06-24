@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include "camera.h"
+#include "glm/gtc/matrix_transform.hpp"
 #ifndef _WIN32 
 #include <SDL2/SDL.h>
 #include <glm/glm.hpp>
@@ -17,15 +18,19 @@ public:
     Geometry();
     ~Geometry();
     void Render();
+	void updateMatrix();
+	void genShadowMap();
+	void renderObjects(); 
     void Initialize();
+	void initShaderProgram();
 	void HandleKeyboardEvent();
     unsigned int CompileShader(unsigned int type, const std::string& source);
     void initShaders();
 private:
-    GLuint vertArrayObjNames, buffObjNames, normalBuffer, program;
+    GLuint vertArrayObjNames, buffObjNames, normalBuffer, program, shadowMap, frameBuffer, shaderProgram;
     glm::mat4x4 rotY;
     glm::mat4x4 rotX;
-    glm::mat4x4 m,v,p;
+	glm::mat4x4 m, v, p, shadowMVP;
     glm::mat4x4 tran;
     float alpha = 0;
     float beta = 0;
