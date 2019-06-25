@@ -31,7 +31,7 @@ public:
     unsigned int CompileShader(unsigned int type, const std::string& source);
     void initShaders();
 private:
-    GLuint vertArrayObjNames, buffObjNames, normalBuffer, program, shadowMap, frameBuffer, shaderProgram;
+    GLuint vertArrayObjNames, buffObjNames, normalBuffer, uvBuffer, program, shadowMap, frameBuffer, shaderProgram;
     glm::mat4x4 rotY;
     glm::mat4x4 rotX;
 	glm::mat4x4 m, v, p, shadowMVP;
