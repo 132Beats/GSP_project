@@ -70,6 +70,9 @@ void Geometry::HandleKeyboardEvent() {
 }
 
 void Geometry::Initialize(){
+	ObjLoader objloader;
+	objloader.loadOBJ("../../res/mod/tank_basic.obj", verte, uvs, norm);
+	glBufferData(GL_ARRAY_BUFFER, verte.size() * sizeof(glm::vec3), &verte[0], GL_STATIC_DRAW);
     alpha = 0;
     const int anzahl = 57;
     glm::vec3 v0 = glm::vec3(-0.6f, -0.6f, 0.39f);
@@ -197,12 +200,14 @@ void Geometry::Initialize(){
     //Gen VBO (genBuffer)
     glGenBuffers(1, &buffObjNames);
     glBindBuffer(GL_ARRAY_BUFFER, buffObjNames);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, positions, GL_STATIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, positions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, verte.size() * sizeof(glm::vec3), &verte[0], GL_STATIC_DRAW);
 
     //Gen VNO (f�r normalen)
     glGenBuffers(1, &normalBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, normals, GL_STATIC_DRAW);
+   // glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, normals, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, norm.size() * sizeof(glm::vec3), &norm[0], GL_STATIC_DRAW);
 
 	//Gen für Schatten
 	frameBuffer = 0;
@@ -256,7 +261,7 @@ glm::mat4x4 Geometry::getModelMat() {
 
 void Geometry::Render() {
 	updateMatrix();
-	genShadowMap();
+	//genShadowMap();
 	renderObjects();
 }
 
@@ -318,18 +323,18 @@ void Geometry::renderObjects(){
 	glBindTexture(GL_TEXTURE_2D, shadowMap);
 	glUniform1i(glGetUniformLocation(program, "shadowMap"), 0);
 
-	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 0.0f, 0.0f));
+	/*GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 0.0f, 0.0f));
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
 	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.4118f, 0.4118f, 0.4118f));
 	GLCall(glDrawArrays(GL_TRIANGLES, 3, 3));
 	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 1.0f, 0.0f));
 	GLCall(glDrawArrays(GL_TRIANGLES, 6, 3));
 	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 0.0f, 1.0f));
-	GLCall(glDrawArrays(GL_TRIANGLES, 9, 3));
+	GLCall(glDrawArrays(GL_TRIANGLES, 9, 3));*/
 	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 1.0f, 1.0f));
-	GLCall(glDrawArrays(GL_TRIANGLES, 12, 6));
+	GLCall(glDrawArrays(GL_TRIANGLES, 0, verte.size()));
 	
-	GLCall(glDrawArrays(GL_POINTS, 18, 1));
+	//GLCall(glDrawArrays(GL_POINTS, 18, 1));
 }
 
 unsigned int Geometry::CompileShader(unsigned int type, const std::string& source){

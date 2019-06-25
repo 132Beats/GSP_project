@@ -5,6 +5,7 @@
 #include <memory>
 #include "camera.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "objLoader.hpp"
 #ifndef _WIN32 
 #include <SDL2/SDL.h>
 #include <glm/glm.hpp>
@@ -14,6 +15,9 @@
 #endif
 
 class Geometry {
+	std::vector< glm::vec3 > verte;
+	std::vector< glm::vec2 > uvs;
+	std::vector< glm::vec3 > norm;
 public:
     Geometry();
     ~Geometry();
