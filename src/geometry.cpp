@@ -3,6 +3,7 @@
 //
 
 #include "geometry.hpp"
+#include <sstream>
 
 #define DIMENSION 3
 #define GLCall(x) GLClearError();x;GLPrintError(#x, __FILE__, __LINE__);
@@ -360,60 +361,10 @@ unsigned int Geometry::CompileShader(unsigned int type, const std::string& sourc
 
 
 void Geometry::initShaders(){
-	const std::string vertexShaderCode =
-		"#version 330 core\n"
-		"layout(location = 0) in vec3 position;\n"
-		"layout(location = 1) in vec3 normal;\n"
-		"uniform mat4 MVP;\n"
-		"uniform mat4 MV;\n"
-		"uniform mat4 M;\n"
-		"uniform mat4 shadowMVP; \n"
-		"out vec3 vertex_position_worldspace\n;"
-		"out vec3 vertex_normal_worldspace\n;"
-		"out vec4 vertex_position_lightspace\n;"
-		"void main(){\n"
-		"gl_Position = MVP * vec4(position,1);\n"
-		//"gl_Position.w = 1.0;\n"
-		"vertex_normal_worldspace = (MV*vec4(normal,0)).xyz; \n"
-		"vertex_position_worldspace= vec3(M*vec4(position,1.0));"
-			"vertex_position_lightspace = (shadowMVP*vec4(position,1)); \n"
-            "}\n";
-	const std::string fragmentShaderCode =
-		"#version 330 core\n"
-		"layout(location = 0) out vec3 color;\n"
-		"uniform vec3 geometry_color;\n"
-		"uniform sampler2D shadowMap;\n"
-		"uniform vec3 light_position_worldspace;\n"
-		"in vec3 vertex_position_worldspace\n;"
-		"in vec3 vertex_normal_worldspace;"
-		"in vec4 vertex_position_lightspace;\n;"
-		"float ShadowCalculation(vec4 fragPosLightSpace)\n"
-		"{\n"
-		// perform perspective divide
-		"vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;\n"
-		// transform to [0,1] range
-		"projCoords = projCoords * 0.5 + 0.5;\n"
-
-		// get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-		"float closestDepth = texture(shadowMap, projCoords.xy).r;\n"
-		// get depth of current fragment from light's perspective
-		"float currentDepth = projCoords.z;\n"
-		// check whether current frag pos is in shadow
-		"vec3 lightDir = normalize(vertex_position_worldspace - vertex_normal_worldspace);\n"
-		"float bias =max(0.05 * (1.0 - dot(vertex_normal_worldspace, lightDir)), 0.005); \n"
-		"float shadow = currentDepth-bias > closestDepth ? 1.0 : 0.0;\n"
-		"if(projCoords.z > 1.0) \n"
-		"	shadow = 0.0; \n"
-		"return shadow;\n"
-		"}\n"
-		"void main(){\n"
-		"float visibility = 1.0-ShadowCalculation(vertex_position_lightspace);\n"
-		//"if( texture( shadowMap, vertex_position_lightspace.xy ).z  <  vertex_position_lightspace.z){\n"
-		//"visibility = 0.1;}\n"
-		//"visibility = texture(shadowMap, vec3(vertex_position_lightspace.xy, (vertex_position_lightspace.z) / vertex_position_lightspace.w));\n"
-		//"if(visibility <0.1){visibility = 0.1;}\n"
-            "color = visibility*geometry_color;\n"
-            "}\n";
+	const std::string vertexShaderCode = loadShader("../../res/shaders/vert.shader");
+		
+	const std::string fragmentShaderCode = loadShader("../../res/shaders/frag.shader");
+		
 
     program = glCreateProgram();
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShaderCode);
@@ -434,21 +385,9 @@ void Geometry::initShaders(){
 }
 
 void Geometry::initShaderProgram(){
-	const std::string vertShader =
-		"#version 330 core\n"
-		"layout(location = 0) in vec3 vertexPosition_modelspace;\n"
-		""
-		"uniform mat4 depthMVP;\n"
-		"void main(){\n"
-		"gl_Position =  depthMVP * vec4(vertexPosition_modelspace,1);\n"
-		"}\n";
-	//Keine Farben = nix tun
-	const std::string fragShader =
-		"#version 330 core\n"
-		"layout(location = 0) out vec3 color;\n"
-		"void main(){\n"
-		"color = vec3(1.0 , 1.0, 1.0)* gl_FragCoord.z;\n"
-		"}\n";
+	const std::string vertShader = loadShader("../../res/shaders/depthVert.shader");
+	
+	const std::string fragShader = loadShader("../../res/shaders/depthFrag.shader");
 
 	shaderProgram = glCreateProgram();
 	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertShader);
@@ -462,4 +401,18 @@ void Geometry::initShaderProgram(){
 
 	glDeleteShader(vs);
 	glDeleteShader(fs);
+
+	
+}
+
+std::string Geometry::loadShader(const char* path) {
+	std::ifstream shaderStream(path, std::ios::in);
+	std::string code;
+	if (shaderStream.is_open()) {
+		std::stringstream st;
+		st << shaderStream.rdbuf();
+		return st.str();
+	}
+	printf("Fehler beim Laden");
+	return 0;
 }
