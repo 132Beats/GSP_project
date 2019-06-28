@@ -71,6 +71,9 @@ void Geometry::HandleKeyboardEvent() {
 }
 
 void Geometry::Initialize(){
+	ObjLoader objloader;
+	objloader.loadOBJ("../../res/mod/tank_basic_optimized.obj", verte, uvs, norm);
+	glBufferData(GL_ARRAY_BUFFER, verte.size() * sizeof(glm::vec3), &verte[0], GL_STATIC_DRAW);
     alpha = 0;
     const int anzahl = 57;
     glm::vec3 v0 = glm::vec3(-0.6f, -0.6f, 0.39f);
@@ -81,116 +84,6 @@ void Geometry::Initialize(){
     glm::mat3x3 rotX = glm::mat3x3(glm::vec3(1, 0, 0), glm::vec3(0, cos(deg),sin(deg)),glm::vec3(0,-sin(deg),cos(deg)));
 
 
-    /*v0 = rotX*v0;
-    v1 = rotX*v1;
-    v2 = rotX*v2;
-    v3 = rotX*v3;
-
-    /*glm::mat3x3 rotX = glm::mat4x4(glm::vec4(cos(alpha), 0, sin(alpha), 0),
-        glm::vec4(0, 1, 0, 0),
-        glm::vec4(-sin(alpha), 0, cos(alpha), 0),
-        glm::vec4(0, 0, 0, 1));
-
-    glm::vec4 tmp = glm::vec4(v0, 1);
-    tmp = rotX*tmp;
-    v0.x = tmp.x;
-    v0.y = tmp.y;
-    v0.z = tmp.z;
-
-    tmp = glm::vec4(v1, 1);
-    tmp = rotZ*tmp;
-    v1.x = tmp.x;
-    v1.y = tmp.y;
-    v1.z = tmp.z;
-
-    tmp = glm::vec4(v2, 1);
-    tmp = rotZ*tmp;
-    v2.x = tmp.x;
-    v2.y = tmp.y;
-    v2.z = tmp.z;
-
-    tmp = glm::vec4(v3, 1);
-    tmp = rotZ*tmp;
-    v3.x = tmp.x;
-    v3.y = tmp.y;
-    v3.z = tmp.z;
-    */
-
-
-    float positions[anzahl] = {
-			//Tetraeder
-            v0.x, v0.y, v0.z,
-            v2.x, v2.y, v2.z,
-            v3.x, v3.y, v3.z,
-
-            v2.x, v2.y, v2.z,
-            v1.x, v1.y, v1.z,
-            v3.x, v3.y, v3.z,
-
-            v0.x, v0.y, v0.z,
-            v3.x, v3.y, v3.z,
-            v1.x, v1.y, v1.z,
-
-            v0.x, v0.y, v0.z,
-            v1.x, v1.y, v1.z,
-            v2.x, v2.y, v2.z,
-
-			//Fläche für schatten
-			-2.0f, -2.0f, -2.0f,
-			2.0f, -2.0, -2.0f,
-			2.0f, -2.0f, 2.0f,
-
-			2.0f, -2.0f, 2.0f,
-			-2.0f, -2.0f, 2.0f,
-			-2.0f, -2.0f, -2.0f,
-
-			//Lichtpos
-			-2.0f, 4.0f, -1.0f
-
-
-    };
-
-    glm::vec3 n0 = glm::cross(v2 - v0, v3 - v0);
-    n0 = n0 / glm::abs(n0);
-    glm::vec3 n1 = glm::cross(v1 - v2, v3 - v2);
-    n1 = n1 / glm::abs(n1);
-    glm::vec3 n2 = glm::cross(v0 - v1, v3 - v1);
-    n2 = n2 / glm::abs(n2);
-    glm::vec3 n3 = glm::cross(v1 - v0, v2 - v0);
-    n3 = n3 / glm::abs(n3);
-	glm::vec3 nSf = glm::vec3(0, 1, 0);
-    float normals[anzahl] = {
-            n0.x, n0.y, n0.z,
-            n0.x, n0.y, n0.z,
-            n0.x, n0.y, n0.z,
-
-            n1.x, n1.y, n1.z,
-            n1.x, n1.y, n1.z,
-            n1.x, n1.y, n1.z,
-
-            n2.x, n2.y, n2.z,
-            n2.x, n2.y, n2.z,
-            n2.x, n2.y, n2.z,
-
-            n3.x, n3.y, n3.z,
-            n3.x, n3.y, n3.z,
-            n3.x, n3.y, n3.z,
-
-			nSf.x, nSf.y, nSf.z,
-			nSf.x, nSf.y, nSf.z,
-			nSf.x, nSf.y, nSf.z,
-
-			nSf.x, nSf.y, nSf.z,
-			nSf.x, nSf.y, nSf.z,
-			nSf.x, nSf.y, nSf.z,
-
-			0.0f, 1.0f, 0.0f
-
-    };
-    printf("N0: %f %f %f\n", n0.x, n0.y, n0.z);
-    printf("V1: %f %f %f\n", v1.x, v1.y, v1.z);
-    printf("V2: %f %f %f\n", v2.x, v2.y, v2.z);
-    printf("V3: %f %f %f\n", v3.x, v3.y, v3.z);
     //gen VAO genVertArr()
     glGenVertexArrays(1, &vertArrayObjNames);
     glBindVertexArray(vertArrayObjNames);
@@ -198,12 +91,17 @@ void Geometry::Initialize(){
     //Gen VBO (genBuffer)
     glGenBuffers(1, &buffObjNames);
     glBindBuffer(GL_ARRAY_BUFFER, buffObjNames);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, positions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, verte.size() * sizeof(glm::vec3), &verte[0], GL_STATIC_DRAW);
 
     //Gen VNO (f�r normalen)
     glGenBuffers(1, &normalBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*anzahl, normals, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, norm.size() * sizeof(glm::vec3), &norm[0], GL_STATIC_DRAW);
+
+	//Gen UVBO
+	glGenBuffers(1, &uvBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+	glBufferData(GL_ARRAY_BUFFER, norm.size() * sizeof(glm::vec3), &norm[0], GL_STATIC_DRAW);
 
 	//Gen für Schatten
 	frameBuffer = 0;
@@ -235,6 +133,9 @@ void Geometry::Initialize(){
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
     glVertexAttribPointer(1, DIMENSION, GL_FLOAT, GL_FALSE,0, 0);
+	glEnableVertexAttribArray(2);
+	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+	glVertexAttribPointer(2, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 glm::mat4x4 Geometry::getModelMat() {
@@ -257,7 +158,7 @@ glm::mat4x4 Geometry::getModelMat() {
 
 void Geometry::Render() {
 	updateMatrix();
-	genShadowMap();
+	//genShadowMap();
 	renderObjects();
 }
 
@@ -319,18 +220,18 @@ void Geometry::renderObjects(){
 	glBindTexture(GL_TEXTURE_2D, shadowMap);
 	glUniform1i(glGetUniformLocation(program, "shadowMap"), 0);
 
-	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 0.0f, 0.0f));
+	/*GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 0.0f, 0.0f));
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
 	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.4118f, 0.4118f, 0.4118f));
 	GLCall(glDrawArrays(GL_TRIANGLES, 3, 3));
 	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 1.0f, 0.0f));
 	GLCall(glDrawArrays(GL_TRIANGLES, 6, 3));
 	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 0.0f, 1.0f));
-	GLCall(glDrawArrays(GL_TRIANGLES, 9, 3));
+	GLCall(glDrawArrays(GL_TRIANGLES, 9, 3));*/
 	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 1.0f, 1.0f));
-	GLCall(glDrawArrays(GL_TRIANGLES, 12, 6));
+	GLCall(glDrawArrays(GL_TRIANGLES, 0, verte.size()));
 	
-	GLCall(glDrawArrays(GL_POINTS, 18, 1));
+	//GLCall(glDrawArrays(GL_POINTS, 18, 1));
 }
 
 unsigned int Geometry::CompileShader(unsigned int type, const std::string& source){

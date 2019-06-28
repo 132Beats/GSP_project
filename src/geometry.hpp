@@ -7,6 +7,7 @@
 #include <fstream>
 #include <string>
 #include "glm/gtc/matrix_transform.hpp"
+#include "objLoader.hpp"
 #ifndef _WIN32 
 #include <SDL2/SDL.h>
 #include <glm/glm.hpp>
@@ -16,6 +17,9 @@
 #endif
 
 class Geometry {
+	std::vector< glm::vec3 > verte;
+	std::vector< glm::vec2 > uvs;
+	std::vector< glm::vec3 > norm;
 public:
     Geometry();
     ~Geometry();
@@ -29,7 +33,7 @@ public:
     unsigned int CompileShader(unsigned int type, const std::string& source);
     void initShaders();
 private:
-    GLuint vertArrayObjNames, buffObjNames, normalBuffer, program, shadowMap, frameBuffer, shaderProgram;
+    GLuint vertArrayObjNames, buffObjNames, normalBuffer, uvBuffer, program, shadowMap, frameBuffer, shaderProgram;
     glm::mat4x4 rotY;
     glm::mat4x4 rotX;
 	glm::mat4x4 m, v, p, shadowMVP;

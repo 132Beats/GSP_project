@@ -16,8 +16,8 @@ Camera::Camera() {
 	fCP = 100.0f;
 	
 	screenRatio = 800.0f / 600.0f;
-	projection = glm::perspective(glm::radians(FoV), screenRatio, nCP, fCP);
-	//projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f);
+	//projection = glm::perspective(glm::radians(FoV), screenRatio, nCP, fCP);
+	projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f);
 }
 
 glm::mat4 Camera::getPerspectiv() {

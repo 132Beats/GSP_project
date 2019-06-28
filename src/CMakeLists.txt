@@ -18,7 +18,12 @@ add_executable(main
 		window.cpp
 		window.hpp
 		geometry.cpp
-		geometry.hpp camera.cpp camera.h perlin.hpp)
+		geometry.hpp 
+		camera.cpp 
+		camera.h 
+		perlin.hpp 
+		objLoader.cpp 
+		objLoader.hpp)
 
 # SDL2
 find_package(SDL2 REQUIRED)
