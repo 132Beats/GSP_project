@@ -7,7 +7,7 @@
 
 
 Camera::Camera() {
-	camPosition = glm::vec3(2, 4, -1);
+	camPosition = glm::vec3(0,0, 5);
 	camTarget = glm::vec3(0, 0, 0);
 	userUp = glm::vec3(0, 1, 0);
 	view = glm::lookAt(camPosition, camTarget, userUp);
@@ -16,8 +16,8 @@ Camera::Camera() {
 	fCP = 100.0f;
 	
 	screenRatio = 800.0f / 600.0f;
-	//projection = glm::perspective(glm::radians(FoV), screenRatio, nCP, fCP);
-	projection = glm::ortho(-25.0f, 25.0f, -1.0f, 25.0f, -25.0f, 25.0f);
+	projection = glm::perspective(glm::radians(FoV), screenRatio, nCP, fCP);
+	//projection = glm::ortho(-25.0f, 25.0f, -1.0f, 25.0f, 0.001f, 100.0f);
 }
 
 glm::mat4 Camera::getPerspectiv() {

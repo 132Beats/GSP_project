@@ -16,6 +16,7 @@ class Camera {
 		Camera();
 		glm::mat4x4 getView();
 		glm::mat4x4 getPerspectiv();
+		glm::vec3 getPosition(){ return camPosition; };
 	private:
 		glm::vec3 camPosition, camTarget, userUp;
 		glm::mat4x4 view, projection;

@@ -38,6 +38,7 @@ private:
     glm::mat4x4 rotX;
 	glm::mat4x4 m, v, p, shadowMVP;
     glm::mat4x4 tran;
+	glm::vec3 lightInvDir;
     float alpha = 0;
     float beta = 0;
     float x = 0;
