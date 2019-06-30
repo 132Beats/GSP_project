@@ -4,6 +4,8 @@
 #include <iostream>
 #include <memory>
 #include "camera.h"
+#include <fstream>
+#include <string>
 #include "glm/gtc/matrix_transform.hpp"
 #include "objLoader.hpp"
 #ifndef _WIN32 
@@ -44,5 +46,6 @@ private:
 	std::unique_ptr<Camera> camera_;
 	const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 	glm::mat4x4 getModelMat();
+	std::string loadShader(const char* path);
 	
 };
