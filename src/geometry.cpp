@@ -112,17 +112,19 @@ void Geometry::Initialize(){
 	glBindTexture(GL_TEXTURE_2D, shadowMap);
 	//Auflösung der shadowmap
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 
 
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, shadowMap, 0);
 	//Nur Tiefentest keine Farbe
-	//glDrawBuffer(GL_NONE);
+	glDrawBuffer(GL_NONE);
 
 	initShaderProgram();
 
@@ -137,6 +139,7 @@ void Geometry::Initialize(){
 	glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
 	glVertexAttribPointer(2, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0);
+	glClearColor(0.0f, 0.4275f, 0.8f, 1.0f);
 }
 
 glm::mat4x4 Geometry::getModelMat() {
@@ -170,10 +173,10 @@ void Geometry::updateMatrix(){
 }
 
 void Geometry::genShadowMap(){
-	
+	glm::vec4 middle = m * glm::vec4(0.0, 0.0, 0.0, 1.0);
 	lightInvDir = glm::vec3(-2.0f, 4.0f, -1.0f);
-	float near_plane = 3.0f, far_plane = 10.0f;
-	glm::mat4 sMProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+	float near_plane = 2.0f, far_plane = 10.0f;
+	glm::mat4 sMProjection = glm::ortho(5.0f, -5.0f, -3.0f, +10.0f, -1.0f, +7.0f);
 	glm::mat4 sMView = glm::lookAt(lightInvDir, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 sMModel = m; 
 
