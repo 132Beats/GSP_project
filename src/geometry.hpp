@@ -24,6 +24,7 @@ public:
     Geometry();
     ~Geometry();
     void Render();
+    void Physics();
 	void updateMatrix();
 	void genShadowMap();
 	void renderObjects(); 
@@ -39,11 +40,15 @@ private:
 	glm::mat4x4 m, v, p, shadowMVP;
     glm::mat4x4 tran;
 	glm::vec3 lightInvDir;
+	float accconst = 0.008;
     float alpha = 0;
     float beta = 0;
     float x = 0;
     float y = 0;
     float z = 0;
+    float vx = 0; //Geschwindigkeit in x-Richtung
+    float vy = 0; //Geschwindigkeit in y-Richtung
+    float vz = 0; //Geschwindigkeit in z-Richtung
 	std::unique_ptr<Camera> camera_;
 	const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 	glm::mat4x4 getModelMat();

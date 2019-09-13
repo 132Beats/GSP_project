@@ -59,6 +59,7 @@ int App::Start() {
 		HandleEvents();
 		window_->Clear();
 		//Render();
+        geometry_->Physics();
         geometry_->Render();
 		window_->Swap();
 		//_sleep(5);

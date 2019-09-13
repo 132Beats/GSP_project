@@ -36,16 +36,24 @@ Geometry::~Geometry() {
 void Geometry::HandleKeyboardEvent() {
 
 	if (keyboard_state_array[SDL_SCANCODE_A]) {
-		alpha += 0.02;
+		alpha += 0.042;
+        //std::cout << "alpha:" << alpha <<std::endl << "beta:"  << beta << std::endl;
 	}
 	if (keyboard_state_array[SDL_SCANCODE_D]) {
-		alpha -= 0.02;
+		alpha -= 0.042;
+        //std::cout << "alpha:" << alpha <<std::endl << "beta:"  << beta << std::endl;
 	}
 	if (keyboard_state_array[SDL_SCANCODE_W]) {
-		beta += 0.02;
+        vx+=cos(alpha)*accconst;
+        vz-=sin(alpha)*accconst;
+		//beta += 0.02;
+        //std::cout << "alpha:" << alpha <<std::endl << "beta:"  << beta << std::endl;
 	}
 	if (keyboard_state_array[SDL_SCANCODE_S]) {
-		beta -= 0.02;
+        vx-=cos(alpha)*accconst;
+        vz+=sin(alpha)*accconst;
+		//beta -= 0.02;
+        //std::cout << "alpha:" << alpha <<std::endl << "beta:"  << beta << std::endl;
 	}
 	if (keyboard_state_array[SDL_SCANCODE_UP]) {
 		y += 0.02;
@@ -158,6 +166,14 @@ glm::mat4x4 Geometry::getModelMat() {
 		glm::vec4(0, 0, 1, 0),
 		glm::vec4(x, y, z, 1));
 	return tran * rotY*rotX;
+}
+void Geometry::Physics() {
+    x+=vx;
+    y+=vy;
+    z+=vz;
+    vx= vx*29/30;
+    vy= vy*29/30;
+    vz= vz*29/30;
 }
 
 void Geometry::Render() {
