@@ -81,7 +81,9 @@ void Geometry::HandleKeyboardEvent() {
 
 void Geometry::Initialize(){
 	ObjLoader objloader;
+	
 	objloader.loadOBJ("../../res/mod/tank.obj", verte, uvs, norm);
+	
 	glBufferData(GL_ARRAY_BUFFER, verte.size() * sizeof(glm::vec3), &verte[0], GL_STATIC_DRAW);
     alpha = 0;
     const int anzahl = 57;
@@ -134,6 +136,7 @@ void Geometry::Initialize(){
 	//Nur Tiefentest keine Farbe
 	glDrawBuffer(GL_NONE);
 
+
 	initShaderProgram();
 
 
@@ -148,6 +151,38 @@ void Geometry::Initialize(){
 	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
 	glVertexAttribPointer(2, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0);
 	glClearColor(0.0f, 0.4275f, 0.8f, 1.0f);
+
+	genMap();
+}
+
+void Geometry::genMap() {
+	ObjLoader objloader;
+	std::vector< glm::vec3 > verte2;
+	std::vector< glm::vec2 > uvs2;
+	std::vector< glm::vec3 > norm2;
+	objloader.loadOBJ("../../res/mod/map.obj", verte2, uvs2, norm2);
+	verteSize = verte2.size();
+
+	//gen VAO genVertArr()
+	glGenVertexArrays(1, &vaoMap);
+	glBindVertexArray(vaoMap);
+
+	//Gen VBO (vertexBuffer)
+	glGenBuffers(1, &vertBuffMap);
+	glBindBuffer(GL_ARRAY_BUFFER, vertBuffMap);
+	glBufferData(GL_ARRAY_BUFFER, verte2.size() * sizeof(glm::vec3), &verte2[0], GL_STATIC_DRAW);
+
+	//Gen VNO (f�r normalen)
+	glGenBuffers(1, &normBuffMap);
+	glBindBuffer(GL_ARRAY_BUFFER, normBuffMap);
+	glBufferData(GL_ARRAY_BUFFER, norm2.size() * sizeof(glm::vec3), &norm2[0], GL_STATIC_DRAW);
+
+	//Gen UVBO
+	glGenBuffers(1, &uvBuffMap);
+	glBindBuffer(GL_ARRAY_BUFFER, uvBuffMap);
+	glBufferData(GL_ARRAY_BUFFER, norm2.size() * sizeof(glm::vec3), &norm2[0], GL_STATIC_DRAW);
+
+
 }
 
 glm::mat4x4 Geometry::getModelMat() {
@@ -212,28 +247,35 @@ void Geometry::genShadowMap(){
 	GLCall(glEnableVertexAttribArray(0));
 	GLCall(glVertexAttribPointer(0, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, verte.size()));
+
 	
 	
 }
 
 void Geometry::renderObjects(){
-	//GLCall(glEnable(GL_CULL_FACE));
-	//GLCall(glCullFace(GL_BACK));
+	//Shader ändern
 	GLCall(glUseProgram(program));
 	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	//Color und Depthbuffer leeren
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	GLCall(glViewport(0, 0, 800, 600));
+
+	//Render Tank
+
 	glm::mat4x4 mvp = p*v*m;
 	glm::mat4 mv = glm::transpose(glm::inverse(m));
-	glm::mat4 id = glm::mat4();
+	glm::mat4 id = glm::mat4(1.0);
+	//Richtiges vertexArray auswählen
 	GLCall(glBindVertexArray(vertArrayObjNames));
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffObjNames));
 	GLCall(glEnableVertexAttribArray(0));
 	GLCall(glVertexAttribPointer(0, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
 	GLCall(glEnableVertexAttribArray(1));
 	GLCall(glVertexAttribPointer(1, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
-	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "shadowMVP"), 1, GL_FALSE, &shadowMVP[0][0]));
 
+	//Uniforms setzen
+	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "shadowMVP"), 1, GL_FALSE, &shadowMVP[0][0]));
+	GLCall(glUniform3fv(glGetUniformLocation(program, "geometry_color"), 1, &glm::vec3(1.0, 1.0, 1.0)[0]));
 	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "MVP"), 1, GL_FALSE, &mvp[0][0]));
 	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "MV"), 1, GL_FALSE, &mv[0][0]));
 	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "M"), 1, GL_FALSE, &m[0][0]));
@@ -242,19 +284,40 @@ void Geometry::renderObjects(){
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, shadowMap);
 	glUniform1i(glGetUniformLocation(program, "shadowMap"), 0);
-
-	/*GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 0.0f, 0.0f));
-	GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
-	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.4118f, 0.4118f, 0.4118f));
-	GLCall(glDrawArrays(GL_TRIANGLES, 3, 3));
-	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 1.0f, 0.0f));
-	GLCall(glDrawArrays(GL_TRIANGLES, 6, 3));
-	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 0.0f, 0.0f, 1.0f));
-	GLCall(glDrawArrays(GL_TRIANGLES, 9, 3));*/
-	GLCall(glUniform3f(glGetUniformLocation(program, "geometry_color"), 1.0f, 1.0f, 1.0f));
+	//Tank zeichnen
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, verte.size()));
 	
-	//GLCall(glDrawArrays(GL_POINTS, 18, 1));
+
+	//Render Map
+
+	//Richtiges vertexArray auswählen
+	GLCall(glBindVertexArray(vaoMap));
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, vertBuffMap));
+	GLCall(glEnableVertexAttribArray(0));
+	GLCall(glVertexAttribPointer(0, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, normBuffMap));
+	GLCall(glEnableVertexAttribArray(2));
+	GLCall(glVertexAttribPointer(2, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
+	//Modelmatrix auf "nicht bewegen" setzen (1er diagonale)
+	m = id;
+	//mvp neu berrechnen
+	mvp = p * v*m;
+	mv = glm::transpose(glm::inverse(m));
+	//shadowMVP neu berrechnen
+	shadowMVP = shadowVP * m;
+	//Uniforms setzen
+	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "MVP"), 1, GL_FALSE, &mvp[0][0]));
+	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "MV"), 1, GL_FALSE, &mv[0][0]));
+	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "M"), 1, GL_FALSE, &m[0][0]));
+	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "shadowMVP"), 1, GL_FALSE, &shadowMVP[0][0]));
+	GLCall(glUniform3fv(glGetUniformLocation(program, "light_position_worldspace"), 1, &glm::vec3(-2.0f, 4.0f, -1.0f)[0]));
+	GLCall(glUniform3fv(glGetUniformLocation(program, "viewPos"), 1, &camera_->getPosition()[0]));
+	//shadowmap setzen
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, shadowMap);
+	glUniform1i(glGetUniformLocation(program, "shadowMap"), 0);
+	//Map zeichnen
+	GLCall(glDrawArrays(GL_TRIANGLES, 0, verte.size()));
 }
 
 unsigned int Geometry::CompileShader(unsigned int type, const std::string& source){

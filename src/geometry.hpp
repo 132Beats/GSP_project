@@ -23,6 +23,7 @@ class Geometry {
 public:
     Geometry();
     ~Geometry();
+	void genMap();
     void Render();
     void Physics();
 	void updateMatrix();
@@ -34,10 +35,12 @@ public:
     unsigned int CompileShader(unsigned int type, const std::string& source);
     void initShaders();
 private:
-    GLuint vertArrayObjNames, buffObjNames, normalBuffer, uvBuffer, program, shadowMap, frameBuffer, shaderProgram;
+    GLuint vertArrayObjNames, buffObjNames, normalBuffer, uvBuffer, program, shadowMap, frameBuffer, shaderProgram,
+			vaoMap, vertBuffMap, normBuffMap, uvBuffMap;
+	int verteSize;
     glm::mat4x4 rotY;
     glm::mat4x4 rotX;
-	glm::mat4x4 m, v, p, shadowMVP;
+	glm::mat4x4 m, v, p, shadowMVP ,shadowVP;
     glm::mat4x4 tran;
 	glm::vec3 lightInvDir;
 	float accconst = 0.008;
