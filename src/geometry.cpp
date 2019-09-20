@@ -252,7 +252,7 @@ void Geometry::renderObjects(){
 	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	//Color und Depthbuffer leeren
 	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	GLCall(glViewport(0, 0, 800, 600));
+	GLCall(glViewport(0, 0, 1280, 720));
 
 	//Render Tank
 

@@ -8,11 +8,11 @@
 
 Camera::Camera() {
 	//Damit mehr angezeigt wird, die camPosition verändern/verschieben
-	camPosition = glm::vec3(40,40,40);
+	camPosition = glm::vec3(35,25,35);
 	camTarget = glm::vec3(0, 0, 0);
 	userUp = glm::vec3(0, 1, 0);
 	view = glm::lookAt(camPosition, camTarget, userUp);
-	FoV = 40.0f;
+	FoV = 55.0f;
 	nCP = 0.1f;
 	fCP = 100.0f;
 	

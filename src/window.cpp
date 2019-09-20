@@ -1,6 +1,6 @@
 #include "window.hpp"
 
-Window::Window() : sdl_window(SDL_CreateWindow("GSP", 20, 20, 800, 600, SDL_WINDOW_OPENGL)) {
+Window::Window() : sdl_window(SDL_CreateWindow("GSP", 20, 20, 1280, 720, SDL_WINDOW_OPENGL)) {
 	//std::cout << "Window()" << std::endl;
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
