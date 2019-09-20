@@ -60,4 +60,23 @@ bool ObjLoader::loadOBJ(const char * path, std::vector < glm::vec3 > & out_verti
 			glm::vec3 normal = temp_normals[normalIndex - 1];
 			out_normals.push_back(normal);
 		}
+
+}
+
+bool ObjLoader::loadTex(const char * path) {
+	GLuint tex_2d = SOIL_load_OGL_texture(
+		path,
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+	);
+	if (0 == tex_2d)
+	{
+		printf("SOIL loading error: '%s'\n", SOIL_last_result());
+		return false;
+	}
+	glBindTexture(GL_TEXTURE_2D, tex_2d);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	return true;
 }

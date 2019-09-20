@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "SOIL.h"
+#include <gl/glew.h>
 
 #ifndef _WIN32 
 #include <SDL2/SDL.h>
@@ -23,5 +25,9 @@ public:
 		std::vector < glm::vec3 > & out_vertices,
 		std::vector < glm::vec2 > & out_uvs,
 		std::vector < glm::vec3 > & out_normals
+	);
+
+	bool loadTex(
+		const char* path
 	);
 };

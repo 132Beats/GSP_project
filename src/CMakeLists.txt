@@ -23,7 +23,8 @@ add_executable(main
 		camera.h 
 		perlin.hpp 
 		objLoader.cpp 
-		objLoader.hpp)
+		objLoader.hpp
+		SOIL.h)
 
 # SDL2
 find_package(SDL2 REQUIRED)
