@@ -84,15 +84,9 @@ void Geometry::Initialize(){
 	
 	objloader.loadOBJ("../../res/mod/tank.obj", verte, uvs, norm);
 	
-	glBufferData(GL_ARRAY_BUFFER, verte.size() * sizeof(glm::vec3), &verte[0], GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, verte.size() * sizeof(glm::vec3), &verte[0], GL_STATIC_DRAW);
     alpha = 0;
-    const int anzahl = 57;
-    glm::vec3 v0 = glm::vec3(-0.6f, -0.6f, 0.39f);
-    glm::vec3 v1 = glm::vec3(0.6f, -0.6f, 0.39f);
-    glm::vec3 v2 = glm::vec3(0.0f, -0.6f, -0.78f);
-    glm::vec3 v3 = glm::vec3(0.0f, 0.6f, 0.0f);
-    float deg = 0.1f;
-    glm::mat3x3 rotX = glm::mat3x3(glm::vec3(1, 0, 0), glm::vec3(0, cos(deg),sin(deg)),glm::vec3(0,-sin(deg),cos(deg)));
+    
 
 
     //gen VAO genVertArr()
@@ -227,7 +221,7 @@ void Geometry::genShadowMap(){
 	glm::vec4 middle = m * glm::vec4(0.0, 0.0, 0.0, 1.0);
 	lightInvDir = glm::vec3(-2.0f, 4.0f, -1.0f);
 	float near_plane = 2.0f, far_plane = 10.0f;
-	glm::mat4 sMProjection = glm::ortho(5.0f, -5.0f, -3.0f, +10.0f, -1.0f, +7.0f);
+	glm::mat4 sMProjection = glm::ortho(25.0f, -25.0f, -25.0f, +25.0f, -25.0f, 25.0f);
 	glm::mat4 sMView = glm::lookAt(lightInvDir, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	glm::mat4 sMModel = m; 
 
@@ -312,6 +306,7 @@ void Geometry::renderObjects(){
 	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "shadowMVP"), 1, GL_FALSE, &shadowMVP[0][0]));
 	GLCall(glUniform3fv(glGetUniformLocation(program, "light_position_worldspace"), 1, &glm::vec3(-2.0f, 4.0f, -1.0f)[0]));
 	GLCall(glUniform3fv(glGetUniformLocation(program, "viewPos"), 1, &camera_->getPosition()[0]));
+	GLCall(glUniform3fv(glGetUniformLocation(program, "geometry_color"), 1, &glm::vec3(0.0, 0.0, 1.0)[0]));
 	//shadowmap setzen
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, shadowMap);

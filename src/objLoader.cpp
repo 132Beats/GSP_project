@@ -64,7 +64,7 @@ bool ObjLoader::loadOBJ(const char * path, std::vector < glm::vec3 > & out_verti
 }
 
 bool ObjLoader::loadTex(const char * path) {
-	GLuint tex_2d = SOIL_load_OGL_texture(
+	/*GLuint tex_2d = SOIL_load_OGL_texture(
 		path,
 		SOIL_LOAD_AUTO,
 		SOIL_CREATE_NEW_ID,
@@ -77,6 +77,6 @@ bool ObjLoader::loadTex(const char * path) {
 	}
 	glBindTexture(GL_TEXTURE_2D, tex_2d);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);*/
 	return true;
 }
