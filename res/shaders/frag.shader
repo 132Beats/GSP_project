@@ -36,7 +36,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 void main(){
 	vec3 colorObj = geometry_color;
     // ambient
-    vec3 ambient = 0.1 * colorObj;
+    vec3 ambient = 0.33 * colorObj;
     // diffuse
     vec3 lightDir = normalize(light_position_worldspace - vertex_position_worldspace);
     vec3 normal = normalize(vertex_normal_worldspace);

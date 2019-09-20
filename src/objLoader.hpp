@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "SOIL.h"
 #include <gl/glew.h>
 
 #ifndef _WIN32 

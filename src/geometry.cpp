@@ -144,7 +144,7 @@ void Geometry::Initialize(){
 	glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
 	glVertexAttribPointer(2, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0);
-	glClearColor(0.0f, 0.4275f, 0.8f, 1.0f);
+	glClearColor(0.13f, 0.44f, 0.7f, 1.0f);
 
 	genMap();
 }
@@ -269,7 +269,7 @@ void Geometry::renderObjects(){
 
 	//Uniforms setzen
 	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "shadowMVP"), 1, GL_FALSE, &shadowMVP[0][0]));
-	GLCall(glUniform3fv(glGetUniformLocation(program, "geometry_color"), 1, &glm::vec3(1.0, 1.0, 1.0)[0]));
+	GLCall(glUniform3fv(glGetUniformLocation(program, "geometry_color"), 1, &glm::vec3(0.13, 0.54, 0.13)[0]));
 	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "MVP"), 1, GL_FALSE, &mvp[0][0]));
 	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "MV"), 1, GL_FALSE, &mv[0][0]));
 	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "M"), 1, GL_FALSE, &m[0][0]));
@@ -306,7 +306,7 @@ void Geometry::renderObjects(){
 	GLCall(glUniformMatrix4fv(glGetUniformLocation(program, "shadowMVP"), 1, GL_FALSE, &shadowMVP[0][0]));
 	GLCall(glUniform3fv(glGetUniformLocation(program, "light_position_worldspace"), 1, &glm::vec3(-2.0f, 4.0f, -1.0f)[0]));
 	GLCall(glUniform3fv(glGetUniformLocation(program, "viewPos"), 1, &camera_->getPosition()[0]));
-	GLCall(glUniform3fv(glGetUniformLocation(program, "geometry_color"), 1, &glm::vec3(0.0, 0.0, 1.0)[0]));
+	GLCall(glUniform3fv(glGetUniformLocation(program, "geometry_color"), 1, &glm::vec3(0.95, 0.7, 0.4)[0]));
 	//shadowmap setzen
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, shadowMap);
