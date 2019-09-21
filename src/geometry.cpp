@@ -149,7 +149,7 @@ void Geometry::loadMap() {
 	std::vector< glm::vec3 > verte2;
 	std::vector< glm::vec2 > uvs2;
 	std::vector< glm::vec3 > norm2;
-	objloader.loadOBJ("../../res/mod/map.obj", verte2, uvs2, norm2);
+	objloader.loadOBJ("../../res/mod/map_noise.obj", verte2, uvs2, norm2);
 	verteSizeMap = verte2.size();
 
 	//gen VAO genVertArr()
