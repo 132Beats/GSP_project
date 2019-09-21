@@ -37,24 +37,24 @@ public:
 private:
     GLuint vertArrayObjNames, buffObjNames, normalBuffer, uvBuffer, program, shadowMap, frameBuffer, shaderProgram,
 			vaoMap, vertBuffMap, normBuffMap, uvBuffMap;
-	int verteSize;
-    glm::mat4x4 rotY;
-    glm::mat4x4 rotX;
-	glm::mat4x4 m, v, p, shadowMVP ,shadowVP;
-    glm::mat4x4 tran;
+	int verteSizeMap;
+	glm::mat4x4 rotYTankA, rotYTankB, rotXTankA, rotXTankB;
+	glm::mat4x4 mTankA, mTankB, v, p, shadowMVPMap, shadowMVPTankA, shadowMVPTankB;
+	glm::mat4x4 tranTankA, tranTankB;
 	glm::vec3 lightInvDir;
 	float accconst = 0.008;
-    float alpha = 0;
-    float beta = 0;
-    float x = 0;
-    float y = 0;
-    float z = 0;
-    float vx = 0; //Geschwindigkeit in x-Richtung
-    float vy = 0; //Geschwindigkeit in y-Richtung
-    float vz = 0; //Geschwindigkeit in z-Richtung
+	float alphaTankA = 0, alphaTankB = 0;
+	float betaTankA = 0, betaTankB = 0;
+	float xTankA = -3, xTankB = 3;
+	float yTankA = 1, yTankB = 1;
+	float zTankA = -3, zTankB = 3;
+	float vxTankA = 0, vxTankB = 0; //Geschwindigkeit in x-Richtung
+	float vyTankA = 0, vyTankB = 0; //Geschwindigkeit in y-Richtung
+	float vzTankA = 0, vzTankB = 0; //Geschwindigkeit in z-Richtung
 	std::unique_ptr<Camera> camera_;
 	const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
-	glm::mat4x4 getModelMat();
+	glm::mat4x4 getModelMatTankA();
+	glm::mat4x4 getModelMatTankB();
 	std::string loadShader(const char* path);
 	
 };
