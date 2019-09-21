@@ -141,10 +141,10 @@ void Geometry::Initialize(){
 	glVertexAttribPointer(2, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0);
 	glClearColor(0.13f, 0.44f, 0.7f, 1.0f);
 
-	genMap();
+	loadMap();
 }
 
-void Geometry::genMap() {
+void Geometry::loadMap() {
 	ObjLoader objloader;
 	std::vector< glm::vec3 > verte2;
 	std::vector< glm::vec2 > uvs2;
@@ -171,6 +171,33 @@ void Geometry::genMap() {
 	glBindBuffer(GL_ARRAY_BUFFER, uvBuffMap);
 	glBufferData(GL_ARRAY_BUFFER, norm2.size() * sizeof(glm::vec3), &norm2[0], GL_STATIC_DRAW);
 
+
+}
+
+/*
+*Die Kugel liegt im speicher und kann nun gerendert werden.
+*/
+void Geometry::loadBullet(){
+	ObjLoader objloader;
+	std::vector< glm::vec3 > verte2;
+	std::vector< glm::vec2 > uvs2;
+	std::vector< glm::vec3 > norm2;
+	objloader.loadOBJ("../../res/mod/bullet.obj", verte2, uvs2, norm2);
+	verteSizeBullet = verte2.size();
+
+	//gen VAO genVertArr()
+	glGenVertexArrays(1, &vaoBullet);
+	glBindVertexArray(vaoBullet);
+
+	//Gen VBO (vertexBuffer)
+	glGenBuffers(1, &vertBullet);
+	glBindBuffer(GL_ARRAY_BUFFER, vertBullet);
+	glBufferData(GL_ARRAY_BUFFER, verte2.size() * sizeof(glm::vec3), &verte2[0], GL_STATIC_DRAW);
+
+	//Gen VNO (f�r normalen)
+	glGenBuffers(1, &normBullet);
+	glBindBuffer(GL_ARRAY_BUFFER, normBuffMap);
+	glBufferData(GL_ARRAY_BUFFER, norm2.size() * sizeof(glm::vec3), &norm2[0], GL_STATIC_DRAW);
 
 }
 

@@ -23,7 +23,8 @@ class Geometry {
 public:
     Geometry();
     ~Geometry();
-	void genMap();
+	void loadMap();
+	void loadBullet();
     void Render();
     void Physics();
 	void updateMatrix();
@@ -36,8 +37,9 @@ public:
     void initShaders();
 private:
     GLuint vertArrayObjNames, buffObjNames, normalBuffer, uvBuffer, program, shadowMap, frameBuffer, shaderProgram,
-			vaoMap, vertBuffMap, normBuffMap, uvBuffMap;
-	int verteSizeMap;
+			vaoMap, vertBuffMap, normBuffMap, uvBuffMap,
+			vaoBullet, vertBullet, normBullet;
+	int verteSizeMap, verteSizeBullet;
 	glm::mat4x4 rotYTankA, rotYTankB, rotXTankA, rotXTankB;
 	glm::mat4x4 mTankA, mTankB, v, p, shadowMVPMap, shadowMVPTankA, shadowMVPTankB;
 	glm::mat4x4 tranTankA, tranTankB;
