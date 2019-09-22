@@ -242,16 +242,34 @@ void Geometry::Physics() {
     xTankA+=vxTankA;
     yTankA+=vyTankA;
     zTankA+=vzTankA;
-    vxTankA= vxTankA*29/30;
-    vyTankA= vyTankA*29/30;
-    vzTankA= vzTankA*29/30;
+    double vgesamtTankA=sqrt((vxTankA*vxTankA)+(vyTankA*vyTankA)+(vzTankA*vzTankA));
+    float abbremsungA = vgesamtTankA*vgesamtTankA*luftreibungskonstante;
+    float abbremsungsfaktorA=1;
+    if(vgesamtTankA!=0) {
+        abbremsungsfaktorA = (vgesamtTankA-abbremsungA-rollreibungskonstante) / vgesamtTankA;
+    }
+    std::cout << abbremsungsfaktorA << std::endl;
+
+    vxTankA= vxTankA*abbremsungsfaktorA;
+    vyTankA= vyTankA*abbremsungsfaktorA;
+    vzTankA= vzTankA*abbremsungsfaktorA;
+
+
 
 	xTankB += vxTankB;
 	yTankB += vyTankB;
 	zTankB += vzTankB;
-	vxTankB = vxTankB * 29 / 30;
-	vyTankB = vyTankB * 29 / 30;
-	vzTankB = vzTankB * 29 / 30;
+    double vgesamtTankB=sqrt((vxTankB*vxTankB)+(vyTankB*vyTankB)+(vzTankB*vzTankB));
+    float abbremsungB = vgesamtTankB*vgesamtTankB*luftreibungskonstante;
+    float abbremsungsfaktorB=1;
+    if(vgesamtTankB!=0) {
+        abbremsungsfaktorB = (vgesamtTankB-abbremsungB-rollreibungskonstante) / vgesamtTankB;
+    }
+    std::cout << abbremsungsfaktorB << std::endl;
+
+    vxTankB= vxTankB*abbremsungsfaktorB;
+    vyTankB= vyTankB*abbremsungsfaktorB;
+    vzTankB= vzTankB*abbremsungsfaktorB;
 }
 
 void Geometry::Render() {
@@ -372,7 +390,7 @@ void Geometry::renderObjects(){
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, verte.size()));
 
 	//Render Map
-
+/*
 	//Richtiges vertexArray auswählen
 	GLCall(glBindVertexArray(vaoMap));
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, vertBuffMap));
@@ -382,7 +400,7 @@ void Geometry::renderObjects(){
 	GLCall(glEnableVertexAttribArray(2));
 	GLCall(glVertexAttribPointer(2, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
 	//Modelmatrix auf "nicht bewegen" setzen (1er diagonale)
-	
+	*/
 	//mvp neu berrechnen
 	mvp = p * v*id;
 	mv = glm::transpose(glm::inverse(id));

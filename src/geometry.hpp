@@ -45,6 +45,8 @@ private:
 	glm::mat4x4 tranTankA, tranTankB;
 	glm::vec3 lightInvDir;
 	float accconst = 0.008;
+    float luftreibungskonstante = 0.1;
+    float rollreibungskonstante = 0.001;
 	float alphaTankA = 0, alphaTankB = 0;
 	float betaTankA = 0, betaTankB = 0;
 	float xTankA = -3, xTankB = 3;
