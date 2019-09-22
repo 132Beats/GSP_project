@@ -390,7 +390,7 @@ void Geometry::renderObjects(){
 	GLCall(glDrawArrays(GL_TRIANGLES, 0, verte.size()));
 
 	//Render Map
-/*
+
 	//Richtiges vertexArray auswählen
 	GLCall(glBindVertexArray(vaoMap));
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, vertBuffMap));
@@ -400,7 +400,7 @@ void Geometry::renderObjects(){
 	GLCall(glEnableVertexAttribArray(2));
 	GLCall(glVertexAttribPointer(2, DIMENSION, GL_FLOAT, GL_FALSE, 0, 0));
 	//Modelmatrix auf "nicht bewegen" setzen (1er diagonale)
-	*/
+	
 	//mvp neu berrechnen
 	mvp = p * v*id;
 	mv = glm::transpose(glm::inverse(id));

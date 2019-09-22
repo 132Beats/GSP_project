@@ -11,7 +11,7 @@ in vec4 vertex_position_lightspace;
 float ShadowCalculation(vec4 fragPosLightSpace)
 {
 	vec3 normal = normalize(vertex_normal_worldspace);
-	vec3 lightDir = normalize(vertex_position_worldspace - vertex_normal_worldspace);
+	vec3 lightDir = normalize(light_position_worldspace - vertex_normal_worldspace);
 	float bias = 0.005*tan(acos(clamp( dot( normal,lightDir ), 0,1 )));
 	bias = clamp(bias, 0,0.01);
 	// perform perspective divide
